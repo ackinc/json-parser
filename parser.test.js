@@ -146,6 +146,9 @@ describe("json parser", () => {
       ],
     };
     assert.deepEqual(parse(JSON.stringify(deptDetails)), deptDetails);
+
+    // newlines in input string are not a problem
+    assert.deepEqual(parse(JSON.stringify(deptDetails, null, 2)), deptDetails);
   });
 });
 
