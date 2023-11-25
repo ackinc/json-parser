@@ -7,6 +7,8 @@ export default function parse(str) {
     return parseNumber(str);
   }
 
+  if (str[0] === '"') return str.slice(1, str.length - 1);
+
   throw new Error("NOT_IMPLEMENTED");
 }
 

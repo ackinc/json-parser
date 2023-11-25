@@ -24,6 +24,12 @@ describe("json parser", () => {
     assertNumbersAlmostEqual(parse("3.14159e5"), 314159);
     assertNumbersAlmostEqual(parse("3.14159e6"), 3141590);
   });
+
+  it("parses strings correctly", () => {
+    assert.equal(parse('""'), "");
+    assert.equal(parse('"a"'), "a");
+    assert.equal(parse('"abcDEF"'), "abcDEF");
+  });
 });
 
 function assertNumbersAlmostEqual(x, y) {
