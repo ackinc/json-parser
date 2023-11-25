@@ -60,14 +60,8 @@ function readNextToken(str) {
     for (j = i; /(\d|\.|e|E)/.test(str[j]); j++);
   } else if (str[i] === '"') {
     // string
-    let inEscapeSeq = false;
-    for (j = i + 1; !(str[j] === '"' && !inEscapeSeq); j++) {
-      if (str[j] === "\\" && !inEscapeSeq) inEscapeSeq = true;
-      else inEscapeSeq = false;
-    }
-
-    // move endIdx past the end quote
-    j += 1;
+    // adding 1 to move endIdx past the end quote
+    j = findStringEndQuoteIndex(str, i) + 1;
   } else if (["[", "]", "{", "}", ",", ":"].includes(str[i])) {
     // "special" chars
     j = i + 1;
@@ -76,4 +70,20 @@ function readNextToken(str) {
   }
 
   return { token: str.slice(i, j), restStr: str.slice(j) };
+}
+
+function findStringEndQuoteIndex(str, startQuoteIdx) {
+  let endQuoteIdx;
+  let inEscapeSeq = false;
+
+  for (
+    endQuoteIdx = startQuoteIdx + 1;
+    str[endQuoteIdx] !== '"' || inEscapeSeq;
+    endQuoteIdx++
+  ) {
+    if (str[endQuoteIdx] === "\\" && !inEscapeSeq) inEscapeSeq = true;
+    else inEscapeSeq = false;
+  }
+
+  return endQuoteIdx;
 }
