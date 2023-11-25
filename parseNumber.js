@@ -1,5 +1,6 @@
-export default // WARN: doesn't handle integers > Number.MAX_SAFE_INTEGER correctly
-function parseNumber(str) {
+// WARN: doesn't handle integers > Number.MAX_SAFE_INTEGER correctly
+
+export default function parseNumber(str) {
   let n = 0;
   let isNegative = str[0] === "-";
 
