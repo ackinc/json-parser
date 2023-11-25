@@ -100,11 +100,11 @@ function readNextToken(str) {
   } else if (str[i] === "[") {
     // array
 
-    const nestingStack = ["["];
-    for (j = i + 1; !(str[j] === "]" && nestingStack.length === 1); j++) {
+    let nOpenSquareBrackets = 1;
+    for (j = i + 1; !(str[j] === "]" && nOpenSquareBrackets === 1); j++) {
       if (str[j] === '"') j = findStringEndQuoteIndex(str, j);
-      if (str[j] === "[") nestingStack.push("[");
-      if (str[j] === "]") nestingStack.pop();
+      if (str[j] === "[") nOpenSquareBrackets++;
+      if (str[j] === "]") nOpenSquareBrackets--;
     }
 
     // move endIdx past the end square bracket
