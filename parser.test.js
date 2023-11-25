@@ -74,6 +74,35 @@ describe("json parser", () => {
       [1, 2, 3],
       ["a", "b"],
     ]);
+
+    // multiple levels of nesting
+    assert.deepEqual(
+      parse(JSON.stringify(["a", "b", ["c", "d", ["e", "f", []]]])),
+      ["a", "b", ["c", "d", ["e", "f", []]]]
+    );
+
+    // arrays with objects inside
+    const members = [
+      {
+        name: { first: "A", last: "D" },
+        age: 30,
+        sex: "male",
+        likes: ["tennis", "apple"],
+      },
+      {
+        name: { first: "B", last: "E" },
+        age: 31,
+        sex: "male",
+        likes: ["tennis", "banana"],
+      },
+      {
+        name: { first: "C", last: "F" },
+        age: 32,
+        sex: "female",
+        likes: ["bahamas", "tennis"],
+      },
+    ];
+    assert.deepEqual(parse(JSON.stringify(members)), members);
   });
 
   it("parses objects correctly", () => {
