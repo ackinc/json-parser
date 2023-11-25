@@ -1,0 +1,8 @@
+{
+  "name": "json-parser",
+  "version": "1.0.0",
+  "main": "parser.js",
+  "author": "Anirudh Nimmagadda <anirudh.nimmagadda@gmail.com>",
+  "license": "MIT",
+  "type": "module"
+}
