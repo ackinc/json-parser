@@ -111,6 +111,15 @@ function readNextToken(str) {
     j += 1;
   } else if (str[i] === "{") {
     // object
+
+    let nOpenBraces = 1;
+    for (j = i + 1; !(str[j] === "}" && nOpenBraces === 1); j++) {
+      if (str[j] === '"') j = findStringEndQuoteIndex(str, j);
+      if (str[j] === "{") nOpenBraces++;
+      if (str[j] === "}") nOpenBraces--;
+    }
+
+    // move endIdx past the end brace
     j += 1;
   } else if (["]", "}", ":", ","].includes(str[i])) {
     // "special" chars

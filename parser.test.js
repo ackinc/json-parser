@@ -130,7 +130,22 @@ describe("json parser", () => {
       }
     );
 
-    // TODO: objects with nested objects
+    // objects with nested objects
+    assert.deepEqual(parse(JSON.stringify({ a: {} })), { a: {} });
+    assert.deepEqual(parse(JSON.stringify({ a: { b: { c: 3 } } })), {
+      a: { b: { c: 3 } },
+    });
+
+    const deptDetails = {
+      deptName: "Sales",
+      foundingYear: 2004,
+      headOfDept: null,
+      members: [
+        { id: 1, name: { first: "A", last: "B" } },
+        { id: 2, name: { first: "C", last: "D" } },
+      ],
+    };
+    assert.deepEqual(parse(JSON.stringify(deptDetails)), deptDetails);
   });
 });
 
