@@ -8,7 +8,7 @@ export default function parse(str) {
   if (str === "false") return false;
 
   if (str[0] === "-" || /\d/.test(str[0])) {
-    if (!/^[1-9]\d*(\.\d+)?([eE]\d+)?$/.test(str)) {
+    if (!/^-?\d+(\.\d+)?([eE]\d+)?$/.test(str)) {
       throw new Error(`MALFORMED_INPUT: ${str}`);
     }
 

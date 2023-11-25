@@ -19,6 +19,7 @@ describe("json parser", () => {
     assert.equal(parse("03"), 3);
     assert.equal(parse("-3"), -3);
     assert.equal(parse("-3e3"), -3000);
+    assertNumbersAlmostEqual(parse("0.14159"), 0.14159);
     assertNumbersAlmostEqual(parse("3.14159"), 3.14159);
     assertNumbersAlmostEqual(parse("3.14159e3"), 3141.59);
     assertNumbersAlmostEqual(parse("3.14159e5"), 314159);
