@@ -30,6 +30,36 @@ describe("json parser", () => {
     assert.equal(parse('"a"'), "a");
     assert.equal(parse('"abcDEF"'), "abcDEF");
   });
+
+  it("parses arrays correctly", () => {
+    // arrays of primitives
+    assert.deepEqual(parse(JSON.stringify([])), []);
+
+    assert.deepEqual(parse(JSON.stringify([null, true, false])), [
+      null,
+      true,
+      false,
+    ]);
+    assert.notDeepEqual(parse(JSON.stringify([null, true, false])), [
+      null,
+      false,
+      true,
+    ]);
+
+    assert.deepEqual(parse(JSON.stringify([1, 2, 3])), [1, 2, 3]);
+
+    assert.deepEqual(parse(JSON.stringify([1, "2", "abc"])), [1, "2", "abc"]);
+    assert.notDeepEqual(parse(JSON.stringify([1, "2", "abc"])), [
+      1,
+      "abc",
+      "2",
+    ]);
+
+    assert.deepEqual(
+      parse(JSON.stringify([1, true, "2", null, false, "", "abc"])),
+      [1, true, "2", null, false, "", "abc"]
+    );
+  });
 });
 
 function assertNumbersAlmostEqual(x, y) {
