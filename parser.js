@@ -40,7 +40,40 @@ export default function parse(str) {
   }
 
   if (str[0] === "{") {
-    throw new Error(`NOT_IMPLEMENTED: ${str}`);
+    const obj = {};
+
+    let nextTokenResults = { token: undefined, restStr: str.slice(1) };
+    do {
+      // read key or '}' (if empty object)
+      nextTokenResults = readNextToken(nextTokenResults.restStr);
+      if (nextTokenResults.token === "}") continue;
+      // TODO: ensure well-formed string
+      const key = parse(nextTokenResults.token); // will be a string
+
+      // read ':'
+      nextTokenResults = readNextToken(nextTokenResults.restStr);
+      if (nextTokenResults.token !== ":") {
+        throw new Error(
+          `Bad input: found ${nextTokenResults.token} in ${str} instead of ':'`
+        );
+      }
+
+      // read val
+      nextTokenResults = readNextToken(nextTokenResults.restStr);
+      const val = parse(nextTokenResults.token);
+
+      obj[key] = val;
+
+      // read ',' or '}'
+      nextTokenResults = readNextToken(nextTokenResults.restStr);
+      if (![",", "}"].includes(nextTokenResults.token)) {
+        throw new Error(
+          `Bad input: expected ',' or '}', found ${nextTokenResults.token}`
+        );
+      }
+    } while (nextTokenResults.token !== "}");
+
+    return obj;
   }
 
   throw new Error(`MALFORMED_INPUT: ${str}`);
@@ -74,7 +107,10 @@ function readNextToken(str) {
 
     // move endIdx past the end square bracket
     j += 1;
-  } else if (["]", ","].includes(str[i])) {
+  } else if (str[i] === "{") {
+    // object
+    j += 1;
+  } else if (["]", "}", ":", ","].includes(str[i])) {
     // "special" chars
     j = i + 1;
   } else {

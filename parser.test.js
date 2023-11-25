@@ -75,6 +75,34 @@ describe("json parser", () => {
       ["a", "b"],
     ]);
   });
+
+  it("parses objects correctly", () => {
+    assert.deepEqual(parse(JSON.stringify({})), {});
+    assert.deepEqual(parse(JSON.stringify({ a: 1, b: 2, c: true, d: null })), {
+      a: 1,
+      b: 2,
+      c: true,
+      d: null,
+    });
+    assert.deepEqual(
+      parse(
+        JSON.stringify({
+          a: 1,
+          b: 2,
+          c: [true, false, null, "x", "y"],
+          d: null,
+        })
+      ),
+      {
+        a: 1,
+        b: 2,
+        c: [true, false, null, "x", "y"],
+        d: null,
+      }
+    );
+
+    // TODO: objects with nested objects
+  });
 });
 
 function assertNumbersAlmostEqual(x, y) {
