@@ -60,6 +60,20 @@ describe("json parser", () => {
       parse(JSON.stringify([1, true, "2", null, false, "", "abc"])),
       [1, true, "2", null, false, "", "abc"]
     );
+
+    // nested arrays
+    assert.deepEqual(parse(JSON.stringify([[]])), [[]]);
+    assert.deepEqual(parse(JSON.stringify([[1, 2]])), [[1, 2]]);
+    assert.deepEqual(parse(JSON.stringify([true, [1, 2], ["a", "b"]])), [
+      true,
+      [1, 2],
+      ["a", "b"],
+    ]);
+    assert.notDeepEqual(parse(JSON.stringify([true, [1, 2], ["a", "b"]])), [
+      true,
+      [1, 2, 3],
+      ["a", "b"],
+    ]);
   });
 });
 
