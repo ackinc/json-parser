@@ -1,16 +1,30 @@
 import parseNumber from "./parseNumber.js";
 
 export default function parse(str) {
+  str = str.trim();
+
   if (str === "null") return null;
   if (str === "true") return true;
   if (str === "false") return false;
 
   if (str[0] === "-" || /\d/.test(str[0])) {
+    if (!/^[1-9]\d*(\.\d+)?([eE]\d+)?$/.test(str)) {
+      throw new Error(`MALFORMED_INPUT: ${str}`);
+    }
+
     return parseNumber(str);
   }
 
-  if (str[0] === '"') return str.slice(1, str.length - 1);
+  if (str[0] === '"') {
+    if (str.length < 2 || str.at(-1) !== '"') {
+      throw new Error(`MALFORMED_INPUT: ${str}`);
+    }
+    // WARN: not dealing with some edge cases:
+    // - "abc\" (should throw malformed input error)
+    return str.slice(1, str.length - 1);
+  }
 
+  // WARN: nested arrays not yet supported
   if (str[0] === "[") {
     const arr = [];
     let nextTokenResults;
@@ -26,7 +40,11 @@ export default function parse(str) {
     return arr;
   }
 
-  throw new Error(`NOT_IMPLEMENTED: ${str}`);
+  if (str[0] === "{") {
+    throw new Error(`NOT_IMPLEMENTED: ${str}`);
+  }
+
+  throw new Error(`MALFORMED_INPUT: ${str}`);
 }
 
 function readNextToken(str) {
