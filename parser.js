@@ -47,8 +47,10 @@ export default function parse(str) {
       // read key or '}' (if empty object)
       nextTokenResults = readNextToken(nextTokenResults.restStr);
       if (nextTokenResults.token === "}") continue;
-      // TODO: ensure well-formed string
       const key = parse(nextTokenResults.token); // will be a string
+      if (typeof key !== "string") {
+        throw new Error(`Expected string key, but received: ${key}`);
+      }
 
       // read ':'
       nextTokenResults = readNextToken(nextTokenResults.restStr);
