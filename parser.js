@@ -59,9 +59,12 @@ function readNextToken(str) {
     for (j = i; /(\d|\.|e|E)/.test(str[j]); j++);
   } else if (str[i] === '"') {
     // string
+
     // adding 1 to move endIdx past the end quote
     j = findStringEndQuoteIndex(str, i) + 1;
   } else if (str[i] === "[") {
+    // array
+
     const nestingStack = ["["];
     for (j = i + 1; !(str[j] === "]" && nestingStack.length === 1); j++) {
       if (str[j] === '"') j = findStringEndQuoteIndex(str, j);
@@ -71,7 +74,7 @@ function readNextToken(str) {
 
     // move endIdx past the end square bracket
     j += 1;
-  } else if (["[", "]", "{", "}", ",", ":"].includes(str[i])) {
+  } else if (["]", ","].includes(str[i])) {
     // "special" chars
     j = i + 1;
   } else {
